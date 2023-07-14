@@ -1,9 +1,31 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import { useEffect } from "react";
+import { getCalApi } from "@calcom/embed-react";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi();
+      cal("floatingButton", {
+        calLink: "rick/get-rick-rolled",
+        config: {
+          name: "John",
+          email: "john@example.com",
+          "metadata[employeeId]": "101",
+          layout: "week_view",
+        },
+      });
+      cal("ui", {
+        styles: { branding: { brandColor: "#000000" } },
+        hideEventTypeDetails: false,
+        layout: "column_view"
+      });
+    })();
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
